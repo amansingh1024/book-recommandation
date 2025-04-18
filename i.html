@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Haul - Recommendations</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-image: url('wp4430580-books-4k-wallpapers.jpg'); /* Replace with your image path */
+            background-size: cover; /* Cover the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent repeating */
+        }
+
+
+        nav {
+            background-color: rgba(26, 35, 126, 0.8); /* Slightly transparent for better readability */
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }*
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+
+        main {
+            margin-top: 6rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: #1a237e;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        .recommendation-container {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        #bookSelect {
+            padding: 0.8rem 1rem;
+            border: 2px solid #1a237e;
+            border-radius: 6px;
+            font-size: 1rem;
+            min-width: 300px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #bookSelect:focus {
+            border-color: #283593;
+            box-shadow: 0 0 0 2px rgba(26,35,126,0.2);
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .book-recommendation {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .book-recommendation:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .book-recommendation img {
+            width: 150px;
+            height: 200px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+
+        .book-recommendation p {
+            color: #1a237e;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #bookSelect {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-book-open"></i>
+                Book Haul
+            </a>
+            <div class="nav-links">
+                <a href="land.html">Home</a>
+                <a href="readbooks.html">Read Books</a>
+                <a href="audiobooks.html">Audio Books</a>
+                <a href="i.html" class="active">Recommendations</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="recommendation-container">
+            <h1>Book Recommender System</h1>
+            <div class="search-container">
+                <select id="bookSelect"></select>
+                <button onclick="getRecommendations()">Get Recommendations</button>
+            </div>
+            <div id="results"></div>
+        </div>
+    </main>
+
+    <script>
+        // Fetch book names for the dropdown menu
+        async function loadBookNames() {
+            const response = await fetch('http://127.0.0.1:5000/book_names');
+            const data = await response.json();
+            const bookSelect = document.getElementById('bookSelect');
+            
+            data.book_names.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book;
+                option.textContent = book;
+                bookSelect.appendChild(option);
+            });
+        }
+
+        // Get recommendations based on the selected book
+        async function getRecommendations() {
+            const selectedBook = document.getElementById('bookSelect').value;
+            const response = await fetch('http://127.0.0.1:5000/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ book_name: selectedBook })
+            });
+
+            const data = await response.json();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            data.recommended_books.forEach((book, index) => {
+                const bookDiv = document.createElement('div');
+                bookDiv.className = 'book-recommendation';
+                bookDiv.innerHTML = `
+                    <img src="${data.poster_urls[index]}" alt="${book}">
+                    <p>${book}</p>
+                `;
+                resultsDiv.appendChild(bookDiv);
+            });
+        }
+
+        // Load the book names when the page is loaded
+        loadBookNames();
+    </script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Haul - Audio Books</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-image: url('wp4430580-books-4k-wallpapers.jpg'); /* Replace with your image path */
+            background-size: cover; /* Cover the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent repeating */
+        }
+
+
+        nav {
+            background-color: rgba(26, 35, 126, 0.8);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+
+        .menu-icon {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        main {
+            margin-top: 5rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .audiobook-section {
+            background-color: rgba(248, 249, 250, 0.9);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .audiobook-section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #1a237e;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #1a237e;
+        }
+
+        .audiobook-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .audiobook-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .audiobook-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            color: #1a237e;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .book-author {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .player-controls {
+            width: 100%;
+        }
+
+        audio {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 3px;
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            width: 30%;
+            height: 100%;
+            background: #1a237e;
+            border-radius: 3px;
+        }
+
+        .duration {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #1a237e;
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .audiobook-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                Book Haul
+            </div>
+            <div class="nav-links">
+                <a href="land.html">Home</a>
+                <a href="readbooks.html">Read Books</a>
+                <a href="#audio-books">Audio Books</a>
+                <a href="i.html">Recommendations</a>
+            </div>
+            <div class="menu-icon">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="audiobook-section">
+            <h2>Featured Audio Books</h2>
+            <div class="audiobook-grid">
+                <div class="audiobook-card">
+                    <div class="book-title">THE STORY OF A NEEDLE</div>
+                    <div class="book-author">By ALOE</div>
+                    <div class="player-controls">
+                        <audio controls>
+                            <source src="storyofaneedle_01_aloe_64kb.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <div class="duration">
+                            <span>0:00</span>
+                            <span>34:11</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="audiobook-card">
+                    <div class="book-title">The Great Gatsby</div>
+                    <div class="book-author">By F. Scott Fitzgerald</div>
+                    <div class="player-controls">
+                        <audio controls>
+                            <source src="greatgatsby4_01_fitzgerald_64kb.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <div class="duration">
+                            <span>0:00</span>
+                            <span>39:55</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="audiobook-card">
+                    <div class="book-title">PRIDE AND PREJUDICE</div>
+                    <div class="book-author">Jane Austen</div>
+                    <div class="player-controls">
+                        <audio controls>
+                            <source src="fcc012_prideandprejudice_austen_vs_64kb.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <div class="duration">
+                            <span>0:00</span>
+                            <span>5:34</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="audiobook-section">
+            <h2>New Releases</h2>
+            <div class="audiobook-grid">
+                <div class="audiobook-card">
+                    <div class="book-title">WHITE NIGHTS</div>
+                    <div class="book-author">Fiodor Dostoïevski </div>
+                    <div class="player-controls">
+                        <audio controls>
+                            <source src="fcc012_whitenights_dostoyevsky_pm_64kb.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <div class="duration">
+                            <span>0:00</span>
+                            <span>24:40</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.querySelector('.menu-icon').addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

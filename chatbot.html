@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Haul - Enhanced Chatbot</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --primary-light: #283593;
+            --accent-color: #ff8f00;
+            --text-light: #f8f9fa;
+            --text-dark: #212121;
+            --background-light: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        #chat-container {
+            width: 320px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--background-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 1000;
+            max-height: 500px;
+        }
+
+        #chat-header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #chat-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        #chat-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-icon {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+        }
+
+        #chat-box {
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #f5f7fa;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background-color: #e3f2fd;
+            color: var(--text-dark);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            margin-right: auto;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        #chat-input-container {
+            display: flex;
+            padding: 10px;
+            background-color: var(--background-light);
+            border-top: 1px solid #e0e0e0;
+        }
+
+        #userInput {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 20px;
+            background-color: #f0f2f5;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        #userInput:focus {
+            background-color: #e6eaf0;
+            box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.2);
+        }
+
+        #sendButton {
+            width: 42px;
+            height: 42px;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            margin-left: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        #sendButton:hover {
+            background-color: var(--primary-light);
+            transform: scale(1.05);
+        }
+
+        #sendButton:active {
+            transform: scale(0.95);
+        }
+
+        .chat-minimized {
+            height: 60px !important;
+            overflow: hidden;
+        }
+
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+            margin-right: auto;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: var(--text-light);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: bounce 1.3s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.3s;
+            margin-right: 0;
+        }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        .suggested-question {
+            background-color: #f0f2f5;
+            color: var(--primary-color);
+            padding: 8px 12px;
+            border-radius: 16px;
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            border: 1px solid #e0e0e0;
+        }
+
+        .suggested-question:hover {
+            background-color: #e3f2fd;
+            border-color: var(--primary-color);
+        }
+
+        #suggestions-container {
+            padding: 10px 15px 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: var(--transition);
+            display: none;
+        }
+
+        #chat-toggle-button:hover {
+            transform: scale(1.1);
+            background-color: var(--primary-light);
+        }
+
+        .hide-chat {
+            transform: translateX(400px);
+        }
+
+        @media (max-width: 768px) {
+            #chat-container {
+                width: 100%;
+                max-width: none;
+                height: 100%;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+
+            .chat-minimized {
+                transform: translateY(calc(100% - 60px));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Chat toggle button for minimized state -->
+    <div id="chat-toggle-button">
+        <i class="fas fa-comment-dots fa-lg"></i>
+    </div>
+
+    <!-- Chat container -->
+    <div id="chat-container">
+        <div id="chat-header">
+            <div id="chat-title">
+                <i class="fas fa-book"></i>
+                <span>Book Haul Assistant</span>
+            </div>
+            <div id="chat-controls">
+                <i class="fas fa-minus chat-icon" id="minimize-chat"></i>
+                <i class="fas fa-times chat-icon" id="close-chat"></i>
+            </div>
+        </div>
+        
+        <div id="chat-box">
+            <div class="message bot-message">
+                Hello! I'm your Book Haul assistant. How can I help you find your next great read?
+                <div class="message-time">Just now</div>
+            </div>
+        </div>
+        
+        <div id="suggestions-container">
+            <div class="suggested-question">What's popular in fiction?</div>
+            <div class="suggested-question">Recommend a classic novel</div>
+            <div class="suggested-question">New releases this month</div>
+        </div>
+        
+        <div id="chat-input-container">
+            <input type="text" id="userInput" placeholder="Ask about books...">
+            <button id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const chatContainer = document.getElementById('chat-container');
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const minimizeButton = document.getElementById('minimize-chat');
+        const closeButton = document.getElementById('close-chat');
+        const toggleButton = document.getElementById('chat-toggle-button');
+        const suggestedQuestions = document.querySelectorAll('.suggested-question');
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        minimizeButton.addEventListener('click', () => {
+            chatContainer.classList.toggle('chat-minimized');
+            toggleButton.style.display = chatContainer.classList.contains('chat-minimized') ? 'flex' : 'none';
+        });
+
+        closeButton.addEventListener('click', () => {
+            chatContainer.classList.add('hide-chat');
+            setTimeout(() => {
+                toggleButton.style.display = 'flex';
+            }, 300);
+        });
+
+        toggleButton.addEventListener('click', () => {
+            chatContainer.classList.remove('hide-chat');
+            chatContainer.classList.remove('chat-minimized');
+            toggleButton.style.display = 'none';
+        });
+
+        suggestedQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                userInput.value = question.textContent;
+                sendMessage();
+            });
+        });
+
+        // Get current time in 12-hour format
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            chatBox.appendChild(typingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const typingDiv = document.getElementById('typing-indicator');
+            if (typingDiv) typingDiv.remove();
+        }
+
+        // Send message function
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+
+            // Add user message to chat
+            addMessage(message, 'user');
+            userInput.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Simulate fetching response from server
+            setTimeout(() => {
+                // Remove typing indicator
+                removeTypingIndicator();
+                
+                // Get bot response (in a real app, this would come from your API)
+                const botResponse = getBotResponse(message);
+                
+                // Add bot message to chat
+                addMessage(botResponse, 'bot');
+            }, 1000 + Math.random() * 1000); // Simulate network delay
+        }
+
+        // Add message to chat
+        function addMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = message;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = getCurrentTime();
+            
+            messageDiv.appendChild(timeDiv);
+            chatBox.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Simple bot response logic (replace with your actual API call)
+        function getBotResponse(message) {
+            message = message.toLowerCase();
+            
+            if (message.includes('recommend') || message.includes('suggestion')) {
+                return "Based on your interests, I'd recommend 'The Night Circus' by Erin Morgenstern or 'The Song of Achilles' by Madeline Miller.";
+            } else if (message.includes('popular') || message.includes('bestseller')) {
+                return "Currently popular books include 'The Last Thing He Told Me' by Laura Dave and 'Project Hail Mary' by Andy Weir.";
+            } else if (message.includes('classic') || message.includes('classics')) {
+                return "Great classic novels include 'Pride and Prejudice' by Jane Austen, 'To Kill a Mockingbird' by Harper Lee, and 'The Great Gatsby' by F. Scott Fitzgerald.";
+            } else if (message.includes('new release') || message.includes('recent')) {
+                return "Some recent releases include 'The Midnight Library' by Matt Haig and 'Klara and the Sun' by Kazuo Ishiguro.";
+            } else if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                return "Hello! How can I help you find your next great read today?";
+            } else {
+                return "I'd be happy to help you find a book that matches your interests. Could you tell me what genres you enjoy reading?";
+            }
+        }
+
+        // In a real implementation, replace the getBotResponse function with:
+        /*
+        function sendMessage() {
+            let userInput = document.getElementById("userInput").value;
+            if (userInput.trim() === "") return;
+            
+            addMessage(userInput, 'user');
+            document.getElementById("userInput").value = "";
+            
+            showTypingIndicator();
+            
+            fetch("http://127.0.0.1:5000/chatbot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                removeTypingIndicator();
+                addMessage(data.response, 'bot');
+            })
+            .catch(error => {
+                removeTypingIndicator();
+                addMessage("Sorry, I'm having trouble connecting right now. Please try again later.", 'bot');
+                console.error("Error:", error);
+            });
+        }
+        */
+    </script>
+</body>
+</html>

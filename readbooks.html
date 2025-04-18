@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Haul - Read Books</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-image: url('wp4430580-books-4k-wallpapers.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+         nav {
+            background-color: rgba(26, 35, 126, 0.8); /* Slightly transparent for better readability */
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            background-color: #283593;
+        }
+
+        main {
+            margin-top: 6rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            background-color: rgba(26, 35, 126, 0.7);
+            padding: 1rem;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .book-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .book-card {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .book-card img {
+            width: 150px;
+            height: 200px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            object-fit: cover;
+        }
+
+        .book-card h3 {
+            color: #1a237e;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .book-card a {
+            background-color: #1a237e;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .book-card a:hover {
+            background-color: #283593;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .book-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .book-card img {
+                width: 120px;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-book-open"></i>
+                Book Haul
+            </a>
+            <div class="nav-links">
+                <a href="land.html">Home</a>
+                <a href="readbooks.html" class="active">Read Books</a>
+                <a href="audiobooks.html">Audio Books</a>
+                <a href="i.html">Recommendations</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Read Books</h1>
+        <div class="book-container">
+            <div class="book-card">
+                <img src="cover.jpg" alt="Book 1">
+                <h3>THE GREAT GATSBY</h3>
+                <p>F.SCOTT FITZGERALD</p>
+                <a href="thegreatgatsby.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="cover1.jpg" alt="Book 2">
+                <h3>The Odyssey</h3>
+                <p>Homer</p>
+                <a href="TheOdyssey.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="219-cover.png" alt="Book 3">
+                <h3>Heart of Darkness</h3>
+                <p>Joseph Conrad</p>
+                <a href="HeartofDarkness.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="cover3.jpg" alt="Book 4">
+                <h3>The Strange Case of Dr. Jekyll and Mr. Hyde</h3>
+                <p>Robert Louis Stevenson</p>
+                <a href="TheStrangeCase.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="cover5.jpg" alt="Book 5">
+                <h3>We</h3>
+                <p>Evgenii Ivanovich Zamiatin</p>
+                <a href="We.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="image001.jpg" alt="Book 6">
+                <h3>The mirror and the bracelet</h3>
+                <p>A. L. O. E.</p>
+                <a href="pg74662-images.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="img-cover.jpg" alt="Book 7">
+                <h3>Bessie at school</h3>
+                <p>Joanna H. Mathews</p>
+                <a href="pg74645-images.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="74641-cover.png" alt="Book 8">
+                <h3>Kreivin kaupunki 1</h3>
+                <p>Simo eronen</p>
+                <a href="pg74641.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="cover43.jpg" alt="Book 9">
+                <h3>Tension</h3>
+                <p> E. M. Delafield</p>
+                <a href="pg74638-images.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="image0011.jpg" alt="Book 10">
+                <h3>Cinderella's prince</h3>
+                <p>Marian Isabel Hurrell</p>
+                <a href="pg74625-images.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="cover58.jpg" alt="Book 11">
+                <h3>A marrying man </h3>
+                <p>G. B. Stern</p>
+                <a href="pg74598-images.html">Read Now</a>
+            </div>
+            <div class="book-card">
+                <img src="cover69.jpg" alt="Book 12">
+                <h3>Diverging roads</h3>
+                <p>Rose Wilder Lane</p>
+                <a href="pg74612-images.html">Read Now</a>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
